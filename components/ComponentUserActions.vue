@@ -10,7 +10,8 @@
 </template>
 
 <script setup>
-const currActivePage = ref('read');
+const route = useRoute();
+const currActivePage = ref(route.name == 'edit' ? 'edit' : 'read');
 </script>
 
 <style scoped>

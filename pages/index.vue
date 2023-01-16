@@ -1,15 +1,19 @@
 <template>
   <div class="container">
     <div class="selector_container">
-      <div v-for="(el, id) in state" :key="id"
-      @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
-        {{id }}
+      <div class="button_container">
+        <div v-for="(el, id) in state" :key="id"
+        @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
+          {{id }}
+        </div>
       </div>
     </div>
     <div class="selector_container">
-      <div v-for="(el, id) in state[currentLang]" :key="id"
-      @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
-        {{id }}
+      <div class="button_container">
+        <div v-for="(el, id) in state[currentLang]" :key="id"
+        @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
+          {{id }}
+        </div>
       </div>
     </div>
     <div :style="currentRole != '' ? 'padding: 10px' : 'padding: 0px'" class="guide_container">
@@ -48,6 +52,29 @@ const useList = (el) => {
   gap: 15px;
   padding: 10px;
   transition: all 0.3s ease-in-out;
+}
+.button_container {
+  /* width: 100%; */
+  display: flex;
+  align-items: stretch;
+  /* justify-content: flex-end; */
+  /* flex-wrap: nowrap; */
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.button_container > .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+.button_container > :first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.button_container > :last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 .guide_container {
   background-color: var(--main-text-color);

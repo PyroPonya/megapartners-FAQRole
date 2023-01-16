@@ -9,6 +9,36 @@
 </template>
 
 <script setup>
+// @HERE: Loading state data from server
+const state = useStore();
+const useRedis = (method = 'set') => {
+  if (method == 'set') {
+    if (!window.confirm("Do you really want to update database with your current data?")) {
+      return false;
+    }
+  }
+
+  const data = JSON.stringify(state.value);
+  // for backup data: [backup]Megapartners_FAQ
+  const request = fetch(`https://eu2-cuddly-gull-30876.upstash.io/${method}/Megapartners_FAQ${method != 'get' ? '/' + data : ''}`, {
+  headers: {
+    Authorization: "Bearer AXicACQgZGFmMTVkMDgtNDhkYi00MjA1LWFiZTAtM2QyNDE1ZjdmODc5YTBjMTA5YmY4YzllNDZmMTg4N2VlNzIxNWY3ZDljNGE="
+  }
+}).then(response => response.json())
+  .then(data => {
+    if(method == 'get') {
+      // console.log(data.result);
+      // @TODO: HERE
+      state.value = JSON.parse(data.result);
+    } else {
+      console.warn('Header Alert!');
+      console.warn(data);
+    }
+  });
+}
+onMounted(() => {
+  useRedis('get');
+})
 </script>
 
 <style scoped>

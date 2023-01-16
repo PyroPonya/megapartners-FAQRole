@@ -1,36 +1,46 @@
 <template>
   <div class="edit_container">
     <div class="selector_container">
-      <div v-for="(el, id) in state" :key="id"
-      @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
-        {{id }}
-      </div>
       <div class="button_container">
+        <div v-for="(el, id) in state" :key="id"
+        @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
+          {{id }}
+        </div>
+        <div @click="usePopupAdd('lang')" class="selector_el btn">+</div>
+      </div>
+      <div class="button_container no_wrap">
         <div v-if="currentLang !== '' && currentRole !== ''" @click="currentLang !== '' && currentRole !== '' ? showPopup = true : ''" class="btn">ADD RULE<div class="emoji">🌈</div></div>
         <div @click="useRedis('get')" class="btn">GLOBAL GET <div class="emoji">📥</div></div>
         <div @click="useRedis('set')" class="btn">GLOBAL POST <div class="emoji">📤</div></div>
       </div>
       </div>
     <div class="selector_container">
-      <div v-for="(el, id) in state[currentLang]" :key="id"
-      @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
-        {{id }}
+      <div class="button_container">
+        <div v-for="(el, id) in state[currentLang]" :key="id"
+        @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
+          {{id }}
+        </div>
       </div>
+      <div @click="usePopupAdd('role')" class="selector_el btn">+</div>
     </div>
-    <br/>
-    {{ contentShowage }}
     <div :style="currentRole != '' ? 'padding: 10px' : 'padding: 0px'" class="guide_container">
       <div v-for="(el, id, index) in state[currentLang][currentRole]" 
       :key="id" @click="useList(id)" class="guide_el">
         <div :currentEditQuestioin="id" class="el_question">
           Q:&nbsp;{{ id }}
-          <button @click="filterObject(state[currentLang][currentRole], id)" class="btn">Remove</button>
+          <div @click="filterObject(state[currentLang][currentRole], id)" class="btn">Remove</div>
         </div>
         <div :currentEditAnswer="el" v-if="true" class="el_answer">
-        <!-- <div :currentEditAnswer="el" contenteditable="true" v-if="expandList.includes(id)" class="el_answer"> -->
           A:&nbsp;{{ el }}
           <input v-model="state[currentLang][currentRole][id]" type="text">
         </div>
+      </div>
+    </div>
+    <div @click.self="showNewNamedElement = !showNewNamedElement" class="popup_menuAdd_container" :style="showNewNamedElement == true ? 'display: flex; width: 100vw; height: 100vh;' : 'display: none; width: 0vw; height: 0vh;'">
+      <div class="popup_menuAdd">
+        <label for="menuAdd">Who am i?</label>
+        <input v-model="newNamedElement" id="menuAdd" type="text">
+        <div @click="addNewVar()" class="btn">Add</div>
       </div>
     </div>
     <div :style="showPopup == false ? 'height: 0px; width: 0px; opacity: 0%; display: none;' : 'height: 600px; width: 100%; opacity: 100%; display: flex; flex-direction: column;'" class="popup">
@@ -46,9 +56,6 @@
 </template>
 
 <script setup>
-const clog = (el) => {
-  console.log(el);
-}
 const state = useStore();
 const currentLang = ref('ru');
 const currentRole = ref('');
@@ -56,12 +63,21 @@ const expandList = ref([]);
 const keyData = ref('');
 const valueData = ref('');
 const showPopup = ref(false);
-
-// maybe remove it later
-const contentShowage = ref('');
-
+const showNewNamedElement = ref(false);
+const newNamedElement = ref('');
+const tempAddRef = ref('');
 
 const useRedis = (method = 'set') => {
+  if (method == 'set') {
+    if (!window.confirm("Do you really want to update database with your current data?")) {
+      return false;
+    }
+  } else {
+    if (!window.confirm("You are about to fetch fresh data from server! All local changes will be discarded! Are you sure?")) {
+      return false;
+    }
+  }
+
   const data = JSON.stringify(state.value);
   // for backup data: [backup]Megapartners_FAQ
   const request = fetch(`https://eu2-cuddly-gull-30876.upstash.io/${method}/Megapartners_FAQ${method != 'get' ? '/' + data : ''}`, {
@@ -72,13 +88,49 @@ const useRedis = (method = 'set') => {
   .then(data => {
     if(method == 'get') {
       console.log(data.result);
-      // state.value = JSON.parse(data.result);
-      contentShowage.value = JSON.parse(data.result);
+      // @TODO: HERE
+      state.value = JSON.parse(data.result);
     } else {
       console.log(data);
-      contentShowage.value = data.result;
     }
   });
+}
+
+const usePopupAdd = (val) => {
+  console.log(val);
+  if (val == 'lang') {
+    tempAddRef.value = val;
+    showNewNamedElement.value = !showNewNamedElement.value;
+  } else if (val == 'role') {
+    tempAddRef.value = val;
+    showNewNamedElement.value = !showNewNamedElement.value;
+  } else {
+    console.warn('SOMETHING WRONG IS HAPPENING!')
+  }
+}
+
+const addNewVar = () => {
+  if (tempAddRef.value == 'lang') {
+    if (newNamedElement.value == '') {
+      showNewNamedElement.value = !showNewNamedElement.value;
+      return false;
+    }
+    state.value[newNamedElement.value] = {};
+    newNamedElement.value = '';
+    tempAddRef.value = '';
+    showNewNamedElement.value = !showNewNamedElement.value;
+  } else if (tempAddRef.value == 'role') {
+    if (newNamedElement.value == '') {
+      showNewNamedElement.value = !showNewNamedElement.value;
+      return false;
+    }
+    state.value[currentLang.value][newNamedElement.value] = {};
+    newNamedElement.value = '';
+    tempAddRef.value = '';
+    showNewNamedElement.value = !showNewNamedElement.value;
+  } else {
+    console.warn('SOMETHING WRONG IS HAPPENING!')
+  }
 }
 
 const addRule = (key, value) => {
@@ -101,6 +153,7 @@ const filterObject = (obj, key) => {
 
 <style scoped>
 .edit_container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -110,17 +163,26 @@ const filterObject = (obj, key) => {
   border-radius: 12px;
   display: flex;
   flex-direction: row;
-  /*flex-wrap: wrap;*/
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
   gap: 15px;
   padding: 10px;
   transition: all 0.3s ease-in-out;
 }
 .button_container {
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   align-items: stretch;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  /* flex-wrap: nowrap; */
+  flex-wrap: wrap;
   gap: 6px;
+}
+.no_wrap {
+  display: flex;
+  flex-wrap: nowrap;
 }
 .button_container > .btn {
   display: flex;
@@ -188,5 +250,53 @@ const filterObject = (obj, key) => {
 }
 .confirm_btn {
   font-size: 25px;
+}
+.popup_menuAdd_container {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  /* width: 100vw; */
+  /* height: 100vh; */
+  width: 0px;
+  height: 0px;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+}
+.popup_menuAdd {
+  background-color: var(--accent-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 10px;
+  margin: 10px;
+  transition: all 0.3s ease-in-out;
+}
+.popup_menuAdd > label {
+  color: var(--main-bg-color);
+}
+.popup_menuAdd > input {
+  width: 100%;
+  color: var(--main-text-color);
+  padding: 10px;
+  border-radius: 12px;
+}
+.popup_menuAdd > .btn {
+  width: 100%;
+  color: var(--main-bg-color);
+}
+@media (max-width: 410px) {
+  .emoji {
+    font-size: 25px;
+  }
 }
 </style>

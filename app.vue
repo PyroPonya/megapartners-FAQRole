@@ -12,31 +12,6 @@ useHead({
   title: 'Slots.FAQr(ole)',
   link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
 });
-const state = useState();
-
-const useRedis = (method = 'get') => {
-  const data = JSON.stringify(state.value);
-  fetch(`https://eu2-cuddly-gull-30876.upstash.io/${method}/Megapartners_FAQ${method != 'get' ? '/' + data : ''}`, {
-  headers: {
-    Authorization: "Bearer AXicACQgZGFmMTVkMDgtNDhkYi00MjA1LWFiZTAtM2QyNDE1ZjdmODc5YTBjMTA5YmY4YzllNDZmMTg4N2VlNzIxNWY3ZDljNGE="
-  }
-}).then(response => response.json())
-  .then(data => {
-    if (method == 'get') {
-      state.value = JSON.parse(data.result);
-    } else {
-      console.warn('Something went wrong hole dude: *app.vue');
-    }
-  });
-}
-onMounted(() => {
-  // @TODO: TURN IT ON DUH
-  // useRedis();
-  // let theWord = prompt('say the code word!');
-  // if (theWord !== 'gachiboychick') {
-  //   location.assign('https://www.google.com/search?newwindow=1&sxsrf=AJOqlzVlx9rm1qhzDk6xr00oh6sPFhwd8Q:1673729854028&q=gachimuchi&tbm=vid&sa=X&ved=2ahUKEwiAz5jL-cf8AhVy-IsKHVpOA24Q0pQJegQIDBAB&biw=1920&bih=937');
-  // }
-});
 </script>
 
 <style>
@@ -56,6 +31,7 @@ body {
 }
 .app_container {
   position: relative;
+  min-width: 400px;
 }
 .app_content {
   max-width: 1024px;
