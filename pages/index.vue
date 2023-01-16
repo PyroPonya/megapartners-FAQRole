@@ -49,9 +49,6 @@ const useList = (el) => {
   padding: 10px;
   transition: all 0.3s ease-in-out;
 }
-.selector_active {
-  filter: hue-rotate(120deg);
-}
 .guide_container {
   background-color: var(--main-text-color);
   border-radius: 12px;

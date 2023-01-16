@@ -1,16 +1,16 @@
 <template>
   <div class="actions_container">
     <NuxtLink to="/">
-      <div class="btn">Read</div>
+      <div @click="currActivePage = 'read'" class="btn" :class="currActivePage == 'read' ? 'selector_active' : ''">Read</div>
     </NuxtLink>
     <NuxtLink to="/edit">
-      <div class="btn">Edit</div>
+      <div @click="currActivePage = 'edit'" class="btn" :class="currActivePage == 'edit' ? 'selector_active' : ''">Edit</div>
     </NuxtLink>
   </div>
 </template>
 
 <script setup>
-
+const currActivePage = ref('read');
 </script>
 
 <style scoped>

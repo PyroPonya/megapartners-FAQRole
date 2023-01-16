@@ -111,4 +111,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
+.selector_active {
+  filter: hue-rotate(120deg);
+}
 </style>

@@ -6,7 +6,7 @@
         {{id }}
       </div>
       <div class="button_container">
-        <div @click="currentLang !== '' && currentRole !== '' ? showPopup = true : ''" class="btn">ADD RULE<div class="emoji">🌈</div></div>
+        <div v-if="currentLang !== '' && currentRole !== ''" @click="currentLang !== '' && currentRole !== '' ? showPopup = true : ''" class="btn">ADD RULE<div class="emoji">🌈</div></div>
         <div @click="useRedis('get')" class="btn">GLOBAL GET <div class="emoji">📥</div></div>
         <div @click="useRedis('set')" class="btn">GLOBAL POST <div class="emoji">📤</div></div>
       </div>
@@ -114,9 +114,6 @@ const filterObject = (obj, key) => {
   gap: 15px;
   padding: 10px;
   transition: all 0.3s ease-in-out;
-}
-.selector_active {
-  filter: hue-rotate(120deg);
 }
 .button_container {
   width: 100%;
