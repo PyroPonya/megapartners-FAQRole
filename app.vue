@@ -32,10 +32,10 @@ const useRedis = (method = 'get') => {
 onMounted(() => {
   // @TODO: TURN IT ON DUH
   // useRedis();
-  let theWord = prompt('say the code word!');
-  if (theWord !== 'gachiboychick') {
-    location.assign('https://www.google.com/search?newwindow=1&sxsrf=AJOqlzVlx9rm1qhzDk6xr00oh6sPFhwd8Q:1673729854028&q=gachimuchi&tbm=vid&sa=X&ved=2ahUKEwiAz5jL-cf8AhVy-IsKHVpOA24Q0pQJegQIDBAB&biw=1920&bih=937');
-  }
+  // let theWord = prompt('say the code word!');
+  // if (theWord !== 'gachiboychick') {
+  //   location.assign('https://www.google.com/search?newwindow=1&sxsrf=AJOqlzVlx9rm1qhzDk6xr00oh6sPFhwd8Q:1673729854028&q=gachimuchi&tbm=vid&sa=X&ved=2ahUKEwiAz5jL-cf8AhVy-IsKHVpOA24Q0pQJegQIDBAB&biw=1920&bih=937');
+  // }
 });
 </script>
 
