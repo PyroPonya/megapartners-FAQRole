@@ -32,7 +32,7 @@
         </div>
         <div :currentEditAnswer="el" v-if="true" class="el_answer">
           A:&nbsp;{{ el }}
-          <input v-model="state[currentLang][currentRole][id]" type="text">
+          <textarea v-model="state[currentLang][currentRole][id]" type="text"></textarea>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <input id="key" v-model="keyData" type="text">
       <br/>
       <label for="valeu">value</label>
-      <input id="value" v-model="valueData" type="text">
+      <textarea id="value" v-model="valueData" type="text"></textarea>
       <div @click="addRule(keyData, valueData)" class="confirm_btn btn" :class="keyData == '' ? 'btn-disabled' : ''">Im pretty confident about this rule. Please add it, good Sir!</div>
     </div>
   </div>
@@ -293,6 +293,11 @@ const filterObject = (obj, key) => {
 .popup_menuAdd > .btn {
   width: 100%;
   color: var(--main-bg-color);
+}
+textarea {
+  resize: none;
+  width: 100%;
+  height: 60px;
 }
 @media (max-width: 410px) {
   .emoji {
