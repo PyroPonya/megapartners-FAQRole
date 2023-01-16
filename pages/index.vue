@@ -2,12 +2,18 @@
   <div class="container">
     <div class="selector_container">
       <div v-for="(el, id) in state" :key="id"
+      @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
+        {{id }}
+      </div>
+    </div>
+    <div class="selector_container">
+      <div v-for="(el, id) in state[currentLang]" :key="id"
       @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
         {{id }}
       </div>
     </div>
     <div :style="currentRole != '' ? 'padding: 10px' : 'padding: 0px'" class="guide_container">
-      <div v-for="(el, id) in state[currentRole]" 
+      <div v-for="(el, id) in state[currentLang][currentRole]" 
       :key="id" @click="useList(id)" class="guide_el">
         <div class="el_question">Q:&nbsp;{{ id }}</div>
         <div v-if="expandList.includes(id)" class="el_answer">A:&nbsp;{{ el }}</div>
@@ -18,6 +24,7 @@
 
 <script setup>
 const state = useStore();
+const currentLang = ref('ru');
 const currentRole = ref('');
 const expandList = ref([]);
 
