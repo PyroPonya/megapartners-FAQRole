@@ -31,7 +31,7 @@ body {
 }
 .app_container {
   position: relative;
-  min-width: 400px;
+  min-width: 360px;
 }
 .app_content {
   max-width: 1024px;
