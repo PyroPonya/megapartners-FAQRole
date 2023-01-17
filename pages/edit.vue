@@ -303,5 +303,8 @@ textarea {
   .emoji {
     font-size: 25px;
   }
+  .btn {
+    font-size: 14px;
+  }
 }
 </style>
