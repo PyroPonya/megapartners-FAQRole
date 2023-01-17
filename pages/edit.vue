@@ -6,7 +6,7 @@
         @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
           {{id }}
         </div>
-        <div @click="usePopupAdd('lang')" class="selector_el btn">+</div>
+        <div @click="usePopupAdd('lang')" class="selector_el btn plus_sign">+</div>
       </div>
       <div class="button_container no_wrap">
         <div v-if="currentLang !== '' && currentRole !== ''" @click="currentLang !== '' && currentRole !== '' ? showPopup = true : ''" class="btn">ADD RULE<div class="emoji">🌈</div></div>
@@ -21,7 +21,7 @@
           {{id }}
         </div>
       </div>
-      <div @click="usePopupAdd('role')" class="selector_el btn">+</div>
+      <div @click="usePopupAdd('role')" class="selector_el btn plus_sign">+</div>
     </div>
     <div :style="currentRole != '' ? 'padding: 10px' : 'padding: 0px'" class="guide_container">
       <div v-for="(el, id, index) in state[currentLang][currentRole]" 
@@ -311,6 +311,9 @@ textarea {
   padding: 10px;
   border-radius: 12px;
 }
+.plus_sign {
+  font-size: 45px;
+}
 @media (max-width: 410px) {
   .emoji {
     font-size: 25px;
@@ -318,5 +321,8 @@ textarea {
   .btn {
     font-size: 14px;
   }
+  .plus_sign {
+  font-size: 35px;
+}
 }
 </style>
