@@ -322,7 +322,7 @@ textarea {
     font-size: 14px;
   }
   .plus_sign {
-  font-size: 35px;
+    font-size: 35px;
 }
 }
 </style>
