@@ -1,8 +1,8 @@
 <template>
   <div class="header_container">
     <div class="header">
-      <div class="logo">megaLOGO</div>
-      <h2>Slots. FAQs by role</h2>
+      <div class="logo"></div>
+      <h2 class="title">Slots. FAQs</h2>
       <ComponentUserActions />
     </div>
   </div>
@@ -63,11 +63,25 @@ onMounted(() => {
 .logo {
   height: 50px;
   min-width: 50px;
-  padding: 0px 10px;
-  background-color: var(--off-bg-color);
+  width: 100px;
+  margin: 0px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-image: url('/brand_icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.logo:hover {
+  cursor: pointer;
+}
+.title {
+  font-size: 34px;
+}
+@media (max-width: 650px) {
+  .title {
+    font-size: 24px;
+  }
 }
 
 </style>
