@@ -36,21 +36,24 @@
         </div>
       </div>
     </div>
-    <div @click.self="showNewNamedElement = !showNewNamedElement" class="popup_menuAdd_container" :style="showNewNamedElement == true ? 'display: flex; width: 100vw; height: 100vh;' : 'display: none; width: 0vw; height: 0vh;'">
+    <div @click.self="showNewNamedElement = !showNewNamedElement; newNamedElement = '';" class="popup_menuAdd_container" :style="showNewNamedElement == true ? 'display: flex; width: 100vw; height: 100vh;' : 'display: none; width: 0vw; height: 0vh;'">
       <div class="popup_menuAdd">
         <label for="menuAdd">Who am i?</label>
         <input v-model="newNamedElement" id="menuAdd" type="text">
         <div @click="addNewVar()" class="btn">Add</div>
       </div>
     </div>
-    <div :style="showPopup == false ? 'height: 0px; width: 0px; opacity: 0%; display: none;' : 'height: 600px; width: 100%; opacity: 100%; display: flex; flex-direction: column;'" class="popup">
-      WHY HELLO THERE
-      <label for="key">key</label>
-      <input id="key" v-model="keyData" type="text">
-      <br/>
-      <label for="valeu">value</label>
-      <textarea id="value" v-model="valueData" type="text"></textarea>
-      <div @click="addRule(keyData, valueData)" class="confirm_btn btn" :class="keyData == '' ? 'btn-disabled' : ''">Im pretty confident about this rule. Please add it, good Sir!</div>
+    <div @click.self="showPopup = !showPopup; keyData = ''; valueData = '';" class="popup_menuAdd_container" :style="showPopup == true ? 'display: flex; width: 100vw; height: 100vh;' : 'display: none; width: 0vw; height: 0vh;'">
+      <div class="popup_menuAdd">
+        <label for="key">Question for {{ currentRole }}:</label>
+        <input id="key" v-model="keyData" type="text">
+        <br/>
+        <label for="valeu">Answer for {{ currentRole }}:</label>
+        <textarea id="value" v-model="valueData" type="text"></textarea>
+        <div @click="addRule(keyData, valueData)" class="confirm_btn btn" :class="keyData == '' ? 'btn-disabled' : ''">
+          Im pretty confident about this rule. Please add it, good Sir!
+        </div>
+        </div>
     </div>
   </div>
 </template>
@@ -261,7 +264,8 @@ const filterObject = (obj, key) => {
   width: 0px;
   height: 0px;
   /* display: flex; */
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 20%;
   justify-content: center;
   background-color: rgba(0,0,0,0.5);
   display: none;
@@ -271,12 +275,12 @@ const filterObject = (obj, key) => {
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   width: 100%;
   max-width: 400px;
   flex-wrap: wrap;
-  gap: 15px;
+  /* gap: 15px; */
   padding: 10px;
   margin: 10px;
   transition: all 0.3s ease-in-out;
@@ -289,15 +293,23 @@ const filterObject = (obj, key) => {
   color: var(--main-text-color);
   padding: 10px;
   border-radius: 12px;
+  margin-bottom: 12px;
+}
+.popup_menuAdd > textarea {
+  margin-bottom: 12px;
 }
 .popup_menuAdd > .btn {
   width: 100%;
+  height: auto;
   color: var(--main-bg-color);
 }
 textarea {
   resize: none;
   width: 100%;
   height: 60px;
+  color: var(--main-text-color);
+  padding: 10px;
+  border-radius: 12px;
 }
 @media (max-width: 410px) {
   .emoji {
