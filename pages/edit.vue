@@ -3,8 +3,8 @@
     <div class="selector_container">
       <div class="button_container">
         <div v-for="(el, id) in state" :key="id"
-        @click="currentLang = id" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
-          {{id }}
+        @click="currentLang = id" @contextmenu="removeItem(state, id)" class="selector_el btn" :class="currentLang == id ? 'selector_active' : ''">
+          {{ id }}
         </div>
         <div @click="usePopupAdd('lang')" class="selector_el btn plus_sign">+</div>
       </div>
@@ -17,7 +17,7 @@
     <div class="selector_container">
       <div class="button_container">
         <div v-for="(el, id) in state[currentLang]" :key="id"
-        @click="currentRole = id" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
+        @click="currentRole = id" @contextmenu="removeItem(state[currentLang], id)" class="selector_el btn" :class="currentRole == id ? 'selector_active' : ''">
           {{id }}
         </div>
       </div>
@@ -152,6 +152,15 @@ const useList = (el) => {
 const filterObject = (obj, key) => {
   delete obj[key];
 };
+const removeItem = (obj, key) => {
+  const ans = confirm(`You are about to remove ${key} from database.
+  Are you sure?`);
+  if (ans) {
+    filterObject(obj, key);
+  } else {
+    return false;
+  }
+}
 </script>
 
 <style scoped>
