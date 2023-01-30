@@ -1,6 +1,13 @@
 <template>
   <div class="app_container">
-    <div class="app_content">
+    <div v-if="showBlocker" class="app_blocker_container">
+      <div class="app_blocker">
+        <label for="access">Please enter the acess code:</label>
+        <input v-model="code" id="access" type="text" autocomplete="off">
+        <div @click="requestAccess()" class="btn">Request Access</div>
+      </div>
+    </div>
+    <div v-if="cookie" class="app_content">
       <ComponentHeader />
       <NuxtPage />
     </div>
@@ -12,6 +19,22 @@ useHead({
   title: 'Slots.FAQr(ole)',
   link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
 });
+const code = ref('');
+const cookie = useCookie('access_allowed',
+{
+  maxAge: 86400,
+});
+const showBlocker = ref(cookie.value ? false : true);
+const requestAccess = () => {
+  if (code.value == 'mega') {
+    cookie.value = 'access_allowed';
+    showBlocker.value = false;
+    return true;
+  } else {
+    return false;
+  }
+};
+
 </script>
 
 <style>
@@ -89,5 +112,26 @@ a {
 }
 .selector_active {
   filter: hue-rotate(120deg);
+}
+.app_blocker_container {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(184, 121, 121, 0.7);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5%;
+
+}
+.app_blocker {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: flex-start;
+  padding: 5%;
+  gap: 15px;
 }
 </style>
